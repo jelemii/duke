@@ -1,12 +1,13 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Duke {
-    protected static ArrayList<Task> taskList = new ArrayList<>();
-  //  protected static int index = 0;
+    private static final ArrayList<Task> taskList = new ArrayList<>();
+    private static String filePath = "data/duke.txt";
 
     public static void handleTodo(String input) throws DukeException {
         if(input.substring(4).trim().isEmpty()) {
@@ -225,22 +226,38 @@ public class Duke {
             System.out.println((i+1) + ". " + taskList.get(i).toString());
         }
     }
-    private static void writeToFile(String filePath, String textToAdd) throws IOException {
+    private static void saveTaskToFile() throws IOException {
         FileWriter fw = new FileWriter(filePath);
-        fw.write(textToAdd);
+        for(Task t : taskList) {
+            fw.write(t + System.lineSeparator());
+        }
         fw.close();
     }
+    private static void printFileContents() throws FileNotFoundException {
+        File f = new File(filePath);
+        Scanner s = new Scanner(f);
+        while (s.hasNext()) {
+            String line = s.nextLine();
+            Task task = parseTaskFromFile(line);
+            taskList.add(task);
+            //taskList.add(s.nextLine());
+        }
+    }
+
+    private static void parseTaskFromFile(String line) {
+
+    }
     public static void main(String[] args) {
+        try {
+            printFileContents();
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found. A new file will be created.\n"
+                    + "Creating new file...");
+        }
+
         String greetUser = "Hello! I'm jelemiiBot\n"
                 + "What can I do for you?\n";
         System.out.println(greetUser);
-
-        String file2 = "temp/lines.txt";
-        try {
-            writeToFile(file2, "first line" + System.lineSeparator() + "second line");
-        } catch (IOException e) {
-            System.out.println("Something went wrong: " + e.getMessage());
-        }
 
         boolean getInput = true;
         Scanner in = new Scanner(System.in);
@@ -280,6 +297,13 @@ public class Duke {
                     throw new DukeException("Please input a valid command to add new task " +
                             "or mark/unmark a current task.");
                 }
+
+                try {
+                    saveTaskToFile();
+                } catch (IOException e) {
+                    System.out.println("Something went wrong: " + e.getMessage());
+                }
+
             } catch (DukeException e) {
                 System.out.println(e.getMessage());
             }
