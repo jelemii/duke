@@ -1,0 +1,7 @@
+[T][ ] bas
+[T][X] zasd
+[T][ ] cbas
+[D][ ] a (by: a)
+[D][X] z (by: b)
+[E][ ] asd (from: z  to: a)
+[E][X] zxc (from: a  to: b)

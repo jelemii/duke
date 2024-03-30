@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Duke {
     private static final ArrayList<Task> taskList = new ArrayList<>();
-    private static String filePath = "data/duke.txt";
+    private static final String filePath = "data/duke.txt";
 
     public static void handleTodo(String input) throws DukeException {
         if(input.substring(4).trim().isEmpty()) {
@@ -18,10 +18,10 @@ public class Duke {
             throw new DukeException("Invalid format. Please add a space after the \"todo\" command.");
         }
         else {
-            String desc = input.substring(5).trim();
+            String desc = input.substring(5);
             checkDuplicate(desc);
         }
-        addTodo(input);
+        addTodo(input.substring(5));
     }
     public static void addTodo(String input){
 
@@ -235,24 +235,61 @@ public class Duke {
     }
     private static void printFileContents() throws FileNotFoundException {
         File f = new File(filePath);
+        if (f.length() == 0) {
+            System.out.println("An empty file exist. Task will be added to this file.\n");
+            return;
+        }
         Scanner s = new Scanner(f);
-        while (s.hasNext()) {
+        while (s.hasNextLine()) {
             String line = s.nextLine();
             Task task = parseTaskFromFile(line);
-            taskList.add(task);
+            taskList.add(taskList.size(),task);
             //taskList.add(s.nextLine());
         }
     }
+    private static Task parseTaskFromFile(String line) {
+        String type = line.substring(1, 2);
+        boolean isDone = line.charAt(4) == 'X';
 
-    private static void parseTaskFromFile(String line) {
+        switch (type) {
+            case "T" -> {
+                String description = line.substring(7);
+                Task todo = new Todo(description);
+                if (isDone){
+                    todo.markAsDone();
+                }
+                return todo;
+            }
+            case "D" -> {
+                int descEndIndex = line.indexOf(' ', 7);
+                String description = line.substring(7, descEndIndex);
+                int byIndex = line.indexOf("(by: ");
+                String by = line.substring(byIndex + 5, line.indexOf(')', byIndex));
+                Task deadline = new Deadline(description,by);
+                if (isDone){ deadline.markAsDone(); }
+                return deadline;
+            }
+            case "E" -> {
+                int descEndIndex = line.indexOf(' ', 7);
+                String description = line.substring(7, descEndIndex);
+                int fromIndex = line.indexOf("(from: ");
+                int toIndex = line.indexOf("to: ");
+                String from = line.substring(fromIndex + 7, line.indexOf("to:", fromIndex));
+                String to = line.substring(toIndex + 4, line.indexOf(')', fromIndex));
+                Task event = new Event(description,from,to);
+                if (isDone){ event.markAsDone(); }
+                return event;
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        }
 
     }
     public static void main(String[] args) {
         try {
             printFileContents();
         } catch (FileNotFoundException e) {
-            System.out.println("File not found. A new file will be created.\n"
-                    + "Creating new file...");
+            System.out.println("Existing file not found. A new file will be created.\n"
+                    + "Creating new file...\n");
         }
 
         String greetUser = "Hello! I'm jelemiiBot\n"
