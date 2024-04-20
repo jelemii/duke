@@ -7,9 +7,6 @@ public class AddEventCommand {
         String to = input.substring(toIndex + 3).trim();
         Task task = new Event(desc, from, to);
         TaskList.addTask(task);
-        // System.out.println("Got it. I've added this task:");
-        // System.out.println((taskList.size()) + ". " + taskList.get(taskList.size() - 1).toString());
-        //  System.out.println("Now you have " + taskList.size() + " tasks in the list.");
         Ui.showTaskAdded(task, TaskList.getSize());
     }
 }

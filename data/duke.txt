@@ -1,5 +1,5 @@
-[T][ ] bas
+[T][X] bas
 [T][X] zasd
 [D][ ] a (by: a)
 [D][ ] z (by: b)
-[E][X] asd (from: z   to: a)
+[E][X] asd (from: z      to: a)
