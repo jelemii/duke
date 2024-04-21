@@ -1,3 +1,9 @@
+package parser;
+
+import commands.*;
+import duke.DukeException;
+import tasks.*;
+
 public class Parser {
     private final TaskList taskList;
 
@@ -58,7 +64,7 @@ public class Parser {
                 throw new DukeException("Input task is empty. Input the task you want to add "
                         + "after the \"todo\" command. e.g. \"todo task\"");
             } else if (taskList.isDuplicate(arguments)) {
-                throw new DukeException("Task already exists in the list.");
+                throw new DukeException("This task already exists in the list.");
             }
             return new AddTodoCommand(arguments);
         case DEADLINE:
@@ -70,15 +76,15 @@ public class Parser {
                 throw new DukeException("Invalid format. Please add a \"/by\" for deadline tasks.");
             }
 
-            String[] deadlineParts = arguments.trim().split("/by", 2);
+            String[] deadlineParts = arguments.split("/by", 2);
 
-            if (deadlineParts.length < 2) {
+            if (deadlineParts.length < 2 || deadlineParts[0].isBlank() || deadlineParts[1].isBlank()) {
                 throw new DukeException("Task or date is empty. Input a task and a date for the \n" +
                         "deadline you want after the \"/by\" command.\ne.g. \"deadline task /by date\"");
             } else if (taskList.isDuplicate(deadlineParts[0])) {
                 throw new DukeException("This task already exists in the list.");
             }
-            return new AddDeadlineCommand(deadlineParts[0], deadlineParts[1]);
+            return new AddDeadlineCommand(deadlineParts[0].trim(), deadlineParts[1].trim());
         case EVENT:
             if (arguments.isBlank()) {
                 throw new DukeException("Input task is empty. Input the task you want to add "
@@ -91,15 +97,15 @@ public class Parser {
 
             int fromIndex = arguments.indexOf("/from");
             int toIndex = arguments.indexOf("/to");
-            String description = input.substring(0, fromIndex).trim();
-            String from = input.substring(fromIndex + 5, toIndex).trim();
-            String to = input.substring(toIndex + 3).trim();
+            String description = arguments.substring(0, fromIndex).trim();
+            String from = arguments.substring(fromIndex + 5, toIndex).trim();
+            String to = arguments.substring(toIndex + 3).trim();
 
 
             if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
                 throw new DukeException("""
-                        Task, start-date-time or end-date-time is empty. Input a task and 2 dates for the\s
-                        start-date and end-date you want for the task after the "/event" command.
+                        Task, start-date-time or end-date-time is empty. Input a task and 2 dates for
+                        the start-date and end-date you want for the task after the "/event" command.
                          e.g. "event task /from start-date-time /to end-date-time\"""");
             } else if (taskList.isDuplicate(description)) {
                 throw new DukeException("This task already exists in the list.");
@@ -120,9 +126,9 @@ public class Parser {
                 return new DeleteCommand(getIndex);
 
             } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
+                throw new DukeException("Please enter a valid number.");
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Index does not exist.");
+                throw new DukeException("Index does not exist.");
             }
         case MARK:
             if (taskList.getSize() == 0) {
@@ -136,16 +142,16 @@ public class Parser {
                 int getIndex = (Integer.parseInt(arguments.trim()) - 1);
                 Task task = taskList.getTask(getIndex);
                 if (getIndex < 0 || getIndex >= taskList.getSize()) {
-                    throw new IndexOutOfBoundsException();
+                    throw new DukeException("Index does not exist.");
                 } else if (task.getStatusIcon().equals("X")) {
                     throw new DukeException("Task is currently marked already.");
                 }
                 return new MarkCommand(getIndex);
 
             } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
+                throw new DukeException("Please enter a valid number.");
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Index does not exist.");
+                throw new DukeException("Index does not exist.");
             }
 
         case UNMARK:
@@ -160,16 +166,16 @@ public class Parser {
                 int getIndex = (Integer.parseInt(arguments.trim()) - 1);
                 Task task = taskList.getTask(getIndex);
                 if (getIndex < 0 || getIndex >= taskList.getSize()) {
-                    throw new IndexOutOfBoundsException();
+                    throw new DukeException("Index does not exist.");
                 } else if (task.getStatusIcon().trim().isEmpty()) {
                     throw new DukeException("Task is currently unmarked already.");
                 }
                 return new UnmarkCommand(getIndex);
 
             } catch (NumberFormatException e) {
-                System.out.println("Please enter a valid number.");
+                throw new DukeException("Please enter a valid number.");
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("Index does not exist.");
+                throw new DukeException("Index does not exist.");
             }
         case LIST:
             if (taskList.getSize() == 0) {

@@ -1,3 +1,12 @@
+package commands;
+
+import commands.Command;
+import storage.Storage;
+import tasks.Event;
+import tasks.Task;
+import tasks.TaskList;
+import ui.Ui;
+
 import java.io.IOException;
 
 public class AddEventCommand extends Command {

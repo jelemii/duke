@@ -1,3 +1,9 @@
+package storage;
+
+import duke.DukeException;
+import parser.Parser;
+import tasks.Task;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -19,7 +25,7 @@ public class Storage {
             if (!file.exists()) {
                 throw new DukeException("File not found.");
             } else if (file.length() == 0) {
-                System.out.println("An empty file exist. Task will be added to this file.\n");
+                System.out.println("An empty file exist. tasks.Task will be added to this file.\n");
                 return null;
             }
             System.out.println("An existing file exist. Loading task from file...\n");

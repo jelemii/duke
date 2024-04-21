@@ -1,3 +1,8 @@
+package ui;
+
+import tasks.Task;
+import tasks.TaskList;
+
 public class Ui {
 
     public static void showTaskAdded(Task task, int taskCount) {

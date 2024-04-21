@@ -1,4 +1,6 @@
 [T][X] zasd
 [D][ ] a (by: a)
 [D][ ] z (by: b)
-[E][X] asd (from: z        to: a)
+[D][ ] a (by: a)
+[T][ ] asd
+[E][ ] c (from: b  to: c)
