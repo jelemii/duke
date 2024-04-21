@@ -3,44 +3,49 @@ import java.util.Scanner;
 
 public class Duke {
     private final Storage storage;
-    private TaskList tasks;
+    private final TaskList tasks;
     private final Ui ui;
+    private final Parser parser;
 
     public Duke(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
-        try{
-            tasks = new TaskList(storage.loadFileContents());
+        tasks = new TaskList();
+        parser = new Parser(tasks);
+        try {
+            tasks.loadTasks(storage.loadFileContents());
         } catch (DukeException e) {
             ui.fileNotFoundError();
-            tasks = new TaskList();
         }
+    }
+
+    public static void main(String[] args) {
+        new Duke("data/duke.txt").run();
     }
 
     public void run() {
         ui.greetUser();
         boolean isNotExit = true;
-        Scanner in = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
 
 
         while (isNotExit) {
-            String input = in.nextLine().trim().toLowerCase();
-            if(input.equals("bye")) {
-                ui.showGoodbyeMessage();
-                isNotExit = false;
-            }
-            else {
-                Parser.parseInput(input);
+            String input = scanner.nextLine().trim().toLowerCase();
+            try {
+                Command command = parser.parseInput(input);
+                command.executeCommand(tasks, ui, storage);
+                isNotExit = !(command.isExit());
+            } catch (IOException | DukeException e) {
+                ui.showErrorMessage(e.getMessage());
             }
         }
+
+        scanner.close();
 
         try {
             storage.saveTaskToFile(tasks.getAllTasks());
         } catch (IOException e) {
-            ui.showErrorMessage("Error loading tasks from file.");
+            ui.showErrorMessage("Error saving tasks to file.");
         }
-    }
-    public static void main(String[] args) {
-        new Duke("data/duke.txt").run();
     }
 }

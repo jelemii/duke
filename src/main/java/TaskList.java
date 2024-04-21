@@ -1,40 +1,44 @@
 import java.util.ArrayList;
 
 public class TaskList {
-    public static ArrayList<Task> tasks;
+    private final ArrayList<Task> tasks;
 
     public TaskList() {
-        tasks = new ArrayList<>();
+        this.tasks = new ArrayList<>();
     }
 
-    public TaskList(ArrayList<Task> tasks) {
-        TaskList.tasks = tasks;
+    public void loadTasks(ArrayList<Task> tasks) {
+        if (tasks != null) {
+            this.tasks.addAll(tasks);
+        }
     }
 
-    public static void addTask(Task task) {
+    public void addTask(Task task) {
         tasks.add(task);
     }
 
-    public static Task getTask(int index) {
+    public Task getTask(int index) {
         return tasks.get(index);
     }
 
-    public static int getSize() {
+    public int getSize() {
         return tasks.size();
     }
 
-    public static void deleteTask(int index) {
+    public void deleteTask(int index) {
         tasks.remove(index);
     }
 
     public ArrayList<Task> getAllTasks() {
-        return tasks;
+        return new ArrayList<>(tasks);
     }
 
-    public void markTask(Task task) {
-        task.markAsDone();
-    }
-    public void unmarkTask(Task task) {
-        task.unmarkAsDone();
+    public boolean isDuplicate(String arguments) {
+        for (Task task : tasks) {
+            if (task.description.equals(arguments)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

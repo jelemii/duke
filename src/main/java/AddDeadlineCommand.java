@@ -1,10 +1,20 @@
-public class AddDeadlineCommand {
-    public static void addDeadline(String input) {
-        int byIndex = input.indexOf("/by");
-        String desc = input.substring(9, byIndex).trim();
-        String by = input.substring(byIndex + 3).trim();
-        Task task = new Deadline(desc, by);
-        TaskList.addTask(task);
-        Ui.showTaskAdded(task, TaskList.getSize());
+import java.io.IOException;
+
+public class AddDeadlineCommand extends Command {
+
+    private final String description;
+    private final String by;
+
+    public AddDeadlineCommand(String description, String by) {
+        this.description = description;
+        this.by = by;
+    }
+
+    @Override
+    public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
+        Task task = new Deadline(description, by);
+        tasks.addTask(task);
+        Ui.showTaskAdded(task, tasks.getSize());
+        storage.saveTaskToFile(tasks.getAllTasks());
     }
 }

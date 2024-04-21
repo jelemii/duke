@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Storage {
-    private String filePath;
+    private final String filePath;
 
     public Storage(String filePath) {
         this.filePath = filePath;
@@ -14,28 +14,31 @@ public class Storage {
 
     public ArrayList<Task> loadFileContents() throws DukeException {
         ArrayList<Task> taskList = new ArrayList<>();
-        File f = new File(filePath);
+        File file = new File(filePath);
         try {
-            if (f.length() == 0) {
+            if (!file.exists()) {
+                throw new DukeException("File not found.");
+            } else if (file.length() == 0) {
                 System.out.println("An empty file exist. Task will be added to this file.\n");
                 return null;
             }
-            Scanner s = new Scanner(f);
-            while (s.hasNextLine()) {
-                String line = s.nextLine();
+            System.out.println("An existing file exist. Loading task from file...\n");
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
                 Task task = Parser.parseTaskFromFile(line);
                 taskList.add(task);
             }
         } catch (FileNotFoundException e) {
-            throw new DukeException("File not found. Creating a new file..");
+            throw new DukeException("File not found.");
         }
         return taskList;
     }
 
     public void saveTaskToFile(ArrayList<Task> tasks) throws IOException {
         FileWriter fw = new FileWriter(filePath);
-        for (Task t : tasks) {
-            fw.write(t + "\n");
+        for (Task task : tasks) {
+            fw.write(task.toString() + "\n");
         }
         fw.close();
     }

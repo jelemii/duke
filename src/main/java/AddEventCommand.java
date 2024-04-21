@@ -1,12 +1,21 @@
-public class AddEventCommand {
-    public static void addEvent(String input) {
-        int fromIndex = input.indexOf("/from");
-        int toIndex = input.indexOf("/to");
-        String desc = input.substring(6, fromIndex).trim();
-        String from = input.substring(fromIndex + 5, toIndex).trim();
-        String to = input.substring(toIndex + 3).trim();
-        Task task = new Event(desc, from, to);
-        TaskList.addTask(task);
-        Ui.showTaskAdded(task, TaskList.getSize());
+import java.io.IOException;
+
+public class AddEventCommand extends Command {
+    private final String description;
+    private final String from;
+    private final String to;
+
+    public AddEventCommand(String description, String from, String to) {
+        this.description = description;
+        this.from = from;
+        this.to = to;
+    }
+
+    @Override
+    public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
+        Task task = new Event(description, from, to);
+        tasks.addTask(task);
+        Ui.showTaskAdded(task, tasks.getSize());
+        storage.saveTaskToFile(tasks.getAllTasks());
     }
 }
