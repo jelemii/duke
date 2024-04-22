@@ -1,6 +1,5 @@
 package commands;
 
-import commands.Command;
 import storage.Storage;
 import tasks.Deadline;
 import tasks.Task;

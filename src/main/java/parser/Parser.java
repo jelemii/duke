@@ -4,6 +4,7 @@ import commands.*;
 import duke.DukeException;
 import tasks.*;
 
+
 public class Parser {
     private final TaskList taskList;
 
@@ -84,7 +85,10 @@ public class Parser {
             } else if (taskList.isDuplicate(deadlineParts[0])) {
                 throw new DukeException("This task already exists in the list.");
             }
-            return new AddDeadlineCommand(deadlineParts[0].trim(), deadlineParts[1].trim());
+
+            String byDate = DateParser.formatDateInput(deadlineParts[1].trim());
+
+            return new AddDeadlineCommand(deadlineParts[0].trim(), byDate);
         case EVENT:
             if (arguments.isBlank()) {
                 throw new DukeException("Input task is empty. Input the task you want to add "
@@ -110,7 +114,11 @@ public class Parser {
             } else if (taskList.isDuplicate(description)) {
                 throw new DukeException("This task already exists in the list.");
             }
-            return new AddEventCommand(description, from, to);
+
+            String fromDate = DateParser.formatDateInput(from);
+            String toDate = DateParser.formatDateInput(to);
+
+            return new AddEventCommand(description, fromDate, toDate);
         case DELETE:
             if (taskList.getSize() == 0) {
                 throw new DukeException("Task list is currently empty. Please add a task first.");
