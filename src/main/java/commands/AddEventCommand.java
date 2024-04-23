@@ -9,6 +9,9 @@ import ui.Ui;
 
 import java.io.IOException;
 
+/**
+ * The command to add a new event task into the task list.
+ */
 public class AddEventCommand extends Command {
     private final String description;
     private final String from;

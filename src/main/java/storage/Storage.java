@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * A storage class which handles storing of tasks. It loads file contents or save tasks to the file.
+ */
 public class Storage {
     private final String filePath;
 
@@ -18,6 +21,12 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the file path.
+     *
+     * @return the list of tasks loaded from the file. If file is empty, return null.
+     * @throws DukeException If file does not exist in the file path or there is an error reading the file.
+     */
     public ArrayList<Task> loadFileContents() throws DukeException {
         ArrayList<Task> taskList = new ArrayList<>();
         File file = new File(filePath);
@@ -41,6 +50,12 @@ public class Storage {
         return taskList;
     }
 
+    /**
+     * Saves the tasks which contains in an array list to the file.
+     *
+     * @param tasks The list of tasks to save into the file.
+     * @throws IOException When a task cannot be saved into the file or there is a problem with the file.
+     */
     public void saveTaskToFile(ArrayList<Task> tasks) throws IOException {
         FileWriter fw = new FileWriter(filePath);
         for (Task task : tasks) {

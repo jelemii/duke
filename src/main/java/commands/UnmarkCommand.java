@@ -8,7 +8,9 @@ import tasks.TaskList;
 import ui.Ui;
 
 import java.io.IOException;
-
+/**
+ * The command to unmark a task in the task list.
+ */
 public class UnmarkCommand extends Command {
     private final int index;
 

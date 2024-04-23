@@ -1,5 +1,8 @@
 package tasks;
 
+/**
+ * Represents a Task in a task list. Super class to different task type such as Todo,Deadline and Event.
+ */
 public class Task {
 
     protected String description;

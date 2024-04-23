@@ -6,7 +6,9 @@ import tasks.TaskList;
 import ui.Ui;
 
 import java.io.IOException;
-
+/**
+ * The command to delete a task in the task list.
+ */
 public class DeleteCommand extends Command {
     private final int index;
 

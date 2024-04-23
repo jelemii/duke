@@ -8,7 +8,9 @@ import tasks.TaskList;
 import ui.Ui;
 
 import java.io.IOException;
-
+/**
+ * The command to mark a task in the task list.
+ */
 public class MarkCommand extends Command {
 
     private final int index;

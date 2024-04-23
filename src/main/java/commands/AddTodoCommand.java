@@ -9,6 +9,9 @@ import ui.Ui;
 
 import java.io.IOException;
 
+/**
+ * The command to add a new to-do task into the task list.
+ */
 public class AddTodoCommand extends Command {
     private final String description;
 

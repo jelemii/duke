@@ -8,6 +8,9 @@ import ui.Ui;
 
 import java.io.IOException;
 
+/**
+ * The command to add a new deadline task into the task list.
+ */
 public class AddDeadlineCommand extends Command {
 
     private final String description;

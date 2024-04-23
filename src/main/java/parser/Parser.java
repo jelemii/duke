@@ -4,7 +4,10 @@ import commands.*;
 import duke.DukeException;
 import tasks.*;
 
-
+/**
+ * A parser class that takes in a string line from a file and convert it to tasks.
+ * It can also take in string input from user and parse it as a command to be executed.
+ */
 public class Parser {
     private final TaskList taskList;
 
@@ -12,6 +15,13 @@ public class Parser {
         this.taskList = taskList;
     }
 
+    /**
+     * Parse a string line from a file which contains the task type and contents
+     * and reconstruct the correct task type.
+     *
+     * @param line A string from the file which contains the tasks type and contents of the task
+     * @return The task that is reconstructed from the string line
+     */
     public static Task parseTaskFromFile(String line) {
         String type = line.substring(1, 2);
         boolean isDone = line.charAt(4) == 'X';
@@ -54,6 +64,13 @@ public class Parser {
 
     }
 
+    /**
+     * Parse the input from the user to interpret the command to be executed.
+     *
+     * @param input The input by the user
+     * @return The command to be executed.
+     * @throws DukeException When the user inputs an invalid command, missing input or incorrect format.
+     */
     public Command parseInput(String input) throws DukeException {
         String[] parts = input.trim().split("\\s+", 2); //https://stackoverflow.com/a/225360
         Command.CommandType commandType = Command.commands(parts[0]);
@@ -80,8 +97,10 @@ public class Parser {
             String[] deadlineParts = arguments.split("/by", 2);
 
             if (deadlineParts.length < 2 || deadlineParts[0].isBlank() || deadlineParts[1].isBlank()) {
-                throw new DukeException("Task or date is empty. Input a task and a date for the \n" +
-                        "deadline you want after the \"/by\" command.\ne.g. \"deadline task /by date\"");
+                throw new DukeException("""
+                        Task or date is empty. Input a task and a date for the
+                        deadline you want after the "/by" command.
+                        e.g. "deadline task /by date\"""");
             } else if (taskList.isDuplicate(deadlineParts[0])) {
                 throw new DukeException("This task already exists in the list.");
             }
