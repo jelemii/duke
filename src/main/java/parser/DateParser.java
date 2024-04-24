@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
  */
 //Parse date formatter logic adapted from https://stackoverflow.com/a/55021417
 //Parsing multiple date formatter in a loop adapted from https://stackoverflow.com/a/4024604
-////Comparing two dates adapted from https://stackoverflow.com/a/58281016
+//Comparing two dates adapted from https://stackoverflow.com/a/58281016 and https://stackoverflow.com/a/27006098
 public class DateParser {
     /**
      * A list of acceptable date time formats to be considered valid
@@ -133,5 +134,21 @@ public class DateParser {
         return startDateTime.isBefore(endDateTime);
     }
 
+    /**
+     * Check if a task date is upcoming in the next 3 days to remind the user
+     * @param date The date that is upcoming such as upcoming due date for deadline tasks
+     *             and start date for event tasks.
+     * @return true if the date is in the next 3 days, false if not.
+     */
+    public static boolean isUpcoming(String date) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy hh:mma");
+
+        LocalDateTime formatDate = LocalDateTime.parse(date, format) ;
+        long daysBetween = ChronoUnit.DAYS.between(LocalDateTime.now(), formatDate);
+        if (daysBetween > 0 && daysBetween <= 3) {
+            return true;
+        }
+        return false;
+    }
 
 }

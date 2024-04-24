@@ -35,7 +35,7 @@ public class Storage {
                 throw new DukeException("File not found.");
             } else if (file.length() == 0) {
                 System.out.println("An empty file exist. tasks.Task will be added to this file.\n");
-                return null;
+                return taskList; //empty list
             }
             System.out.println("An existing file exist. Loading task from file...\n");
             Scanner scanner = new Scanner(file);

@@ -30,6 +30,7 @@ public class Duke {
         parser = new Parser(tasks);
         try {
             tasks.loadTasks(storage.loadFileContents());
+            ui.showUpcomingTasks(tasks); //Reminder to user of upcoming tasks
         } catch (DukeException e) {
             ui.fileNotFoundError();
         }

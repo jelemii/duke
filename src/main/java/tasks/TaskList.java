@@ -1,5 +1,7 @@
 package tasks;
 
+import parser.DateParser;
+
 import java.util.ArrayList;
 
 public class TaskList {
@@ -79,5 +81,33 @@ public class TaskList {
             }
         }
         return false;
+    }
+
+    /**
+     * Creates a list of upcoming deadline tasks that are due soon.
+     * @return The list of upcoming deadline tasks.
+     */
+    public ArrayList<Deadline> upcomingDeadlinesDue() {
+        ArrayList<Deadline> upcomingDeadlines = new ArrayList<>();
+        for(Task task: tasks) {
+            if (task.toString().charAt(1) == 'D' && DateParser.isUpcoming(((Deadline) task).getBy())) {
+                upcomingDeadlines.add((Deadline) task);
+            }
+        }
+        return upcomingDeadlines;
+    }
+
+    /**
+     * creates a list of upcoming event tasks that are starting soon.
+     * @return The list of upcoming event tasks.
+     */
+    public ArrayList<Event> upcomingEvents() {
+        ArrayList<Event> upcomingEvents = new ArrayList<>();
+        for(Task task: tasks) {
+            if (task.toString().charAt(1) == 'E' && DateParser.isUpcoming(((Event)task).getTo())) {
+                upcomingEvents.add((Event) task);
+            }
+        }
+        return upcomingEvents;
     }
 }

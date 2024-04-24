@@ -1,7 +1,9 @@
 package ui;
 
-import tasks.Task;
-import tasks.TaskList;
+import storage.Storage;
+import tasks.*;
+
+import java.util.ArrayList;
 
 /**
  * The Ui class manages interaction with the user
@@ -36,7 +38,7 @@ public class Ui {
      * Greets the user.
      */
     public void greetUser() {
-        System.out.println("Hello! I'm jelemiiBot\n"
+        System.out.println("\nHello! I'm jelemiiBot\n"
                 + "What can I do for you?\n");
     }
 
@@ -97,5 +99,31 @@ public class Ui {
      */
     public void showGoodbyeMessage() {
         System.out.println("Bye. Hope to see you again soon!");
+    }
+
+    /**
+     * Checks for upcoming deadline or event tasks and display them to remind the user.
+     * @param taskList The list of current tasks.
+     */
+    public void showUpcomingTasks(TaskList taskList) {
+        ArrayList<Deadline> upcomingDeadlinesDue = taskList.upcomingDeadlinesDue();
+        ArrayList<Event> upcomingEvents = taskList.upcomingEvents();
+
+        if(!(upcomingDeadlinesDue.isEmpty() && upcomingEvents.isEmpty())) {
+            System.out.println("Reminder: You have upcoming Tasks.");
+            if(!upcomingDeadlinesDue.isEmpty()) {
+                System.out.println("\nUpcoming Deadlines: ");
+                for(Deadline deadline : upcomingDeadlinesDue) {
+                    System.out.println(deadline);
+                }
+            }
+            if(!upcomingEvents.isEmpty()) {
+                System.out.println("\nUpcoming Events: ");
+                for(Event event : upcomingEvents) {
+                    System.out.println(event);
+                }
+            }
+        }
+
     }
 }

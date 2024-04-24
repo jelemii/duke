@@ -71,10 +71,13 @@ public class Parser {
      * @return The command to be executed.
      * @throws DukeException When the user inputs an invalid command, missing input or incorrect format.
      */
+
+    //grouping white spaces as a delimiter adapted from https://stackoverflow.com/a/225360
     public Command parseInput(String input) throws DukeException {
-        String[] parts = input.trim().split("\\s+", 2); //https://stackoverflow.com/a/225360
+        String[] parts = input.trim().split("\\s+", 2);
         Command.CommandType commandType = Command.commands(parts[0]);
-        String arguments = parts.length > 1 ? parts[1] : ""; //use ternary operator to check if there is a 2nd part, assign argument to parts[1]
+        //use ternary operator to check if there is a 2nd part, if there is, assign argument to parts[1]
+        String arguments = parts.length > 1 ? parts[1] : "";
 
         switch (commandType) {
         case TODO:
