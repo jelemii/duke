@@ -136,7 +136,9 @@ public class Parser {
 
             String fromDate = DateParser.formatDateInput(from);
             String toDate = DateParser.formatDateInput(to);
-
+            if(!DateParser.isBefore(fromDate, toDate)) {
+                throw new DukeException("The end date-time cannot be earlier than the start date time");
+            }
             return new AddEventCommand(description, fromDate, toDate);
         case DELETE:
             if (taskList.getSize() == 0) {

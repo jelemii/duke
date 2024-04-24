@@ -13,7 +13,9 @@ import java.util.List;
  * A date parser class which takes in input from deadline and event commands which requires dates and time input.
  * It will take these input and parse in date format.
  */
-
+//Parse date formatter logic adapted from https://stackoverflow.com/a/55021417
+//Parsing multiple date formatter in a loop adapted from https://stackoverflow.com/a/4024604
+////Comparing two dates adapted from https://stackoverflow.com/a/58281016
 public class DateParser {
     /**
      * A list of acceptable date time formats to be considered valid
@@ -115,5 +117,21 @@ public class DateParser {
         }
         throw new DukeException("Invalid date format. Please input a valid format. e.g. dd-MM-yyyy");
     }
+    /**
+     * Check if the start date time is before end date time. This is to be used for
+     * event tasks where a start date time (from) and an end date time (to) is required.
+     * @param from the start date time of the event task
+     * @param to the end date time of the event task
+     * @return true if the start date time is before end date time, else return false
+     */
+    public static boolean isBefore(String from, String to) {
+        DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM d yyyy hh:mma");
+
+        LocalDateTime startDateTime = LocalDateTime.parse( from, format) ;
+        LocalDateTime endDateTime = LocalDateTime.parse( to, format) ;
+
+        return startDateTime.isBefore(endDateTime);
+    }
+
 
 }
