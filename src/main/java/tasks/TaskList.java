@@ -98,7 +98,7 @@ public class TaskList {
     }
 
     /**
-     * creates a list of upcoming event tasks that are starting soon.
+     * Creates a list of upcoming event tasks that are starting soon.
      * @return The list of upcoming event tasks.
      */
     public ArrayList<Event> upcomingEvents() {
@@ -109,5 +109,20 @@ public class TaskList {
             }
         }
         return upcomingEvents;
+    }
+
+    /**
+     * Creates a list of task which matches the keyword.
+     * @param keyword The keyword to find in the list.
+     * @return A list of the tasks which matches the keyword.
+     */
+    public ArrayList<Task> matchingTasksFound(String keyword) {
+        ArrayList<Task> matchingTasksFound = new ArrayList<>();
+        for(Task task : tasks) {
+            if(task.description.toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasksFound.add(task);
+            }
+        }
+        return matchingTasksFound;
     }
 }

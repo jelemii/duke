@@ -216,6 +216,11 @@ public class Parser {
             return new ListCommand();
         case BYE:
             return new ExitCommand();
+        case FIND:
+            if (arguments.isBlank()) {
+                throw new DukeException("Keyword to search is empty. Please enter a keyword.");
+            }
+            return new FindCommand(arguments);
         default:
             throw new DukeException("Invalid command. Please try again."
                     + " Remember to leave a space after each command.");

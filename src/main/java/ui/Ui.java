@@ -124,6 +124,21 @@ public class Ui {
                 }
             }
         }
+    }
 
+    /**
+     * Display the tasks found that matches the keyword.
+     * @param tasks The list of tasks that matches the keyword.
+     */
+    public void showMatchingTasks(ArrayList<Task> tasks) {
+        if (tasks.isEmpty()) {
+            System.out.println("No matching task found.");
+        }
+        else {
+            System.out.println("Here are the matching tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + ". " + tasks.get(i).toString());
+            }
+        }
     }
 }
