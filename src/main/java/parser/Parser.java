@@ -25,43 +25,71 @@ public class Parser {
     public static Task parseTaskFromFile(String line) {
         String type = line.substring(1, 2);
         boolean isDone = line.charAt(4) == 'X';
+        //use -1 as a null because if statement will make the variable out of scope
+        int tagIndex = line.contains("#") ? line.indexOf("#") : -1;
 
         switch (type) {
-        case "T" -> {
-            String description = line.substring(7);
-            Task todo = new Todo(description);
-            if (isDone) {
-                todo.markAsDone();
-            }
-            return todo;
-        }
-        case "D" -> {
-            int descEndIndex = line.indexOf(' ', 7);
-            String description = line.substring(7, descEndIndex);
-            int byIndex = line.indexOf("(by: ");
-            String by = line.substring(byIndex + 5, line.indexOf(')', byIndex));
-            Task deadline = new Deadline(description, by);
-            if (isDone) {
-                deadline.markAsDone();
-            }
-            return deadline;
-        }
-        case "E" -> {
-            int descEndIndex = line.indexOf(' ', 7);
-            String description = line.substring(7, descEndIndex);
-            int fromIndex = line.indexOf("(from: ");
-            int toIndex = line.indexOf("to: ");
-            String from = line.substring(fromIndex + 7, line.indexOf("to:", fromIndex));
-            String to = line.substring(toIndex + 4, line.indexOf(')', fromIndex));
-            Task event = new Event(description, from, to);
-            if (isDone) {
-                event.markAsDone();
-            }
-            return event;
-        }
-        default -> throw new IllegalStateException("Unexpected value: " + type);
+        case "T":
+            return getTodo(line, tagIndex, isDone);
+        case "D":
+            return getDeadline(line, tagIndex, isDone);
+        case "E":
+            return getEvent(line, tagIndex, isDone);
+        default:
+            throw new IllegalStateException("Unexpected value: " + type);
         }
 
+    }
+
+    private static Task getTodo(String line, int tagIndex, boolean isDone) {
+        //if tagIndex is -1(null) means there is no tag
+        String description = (tagIndex != -1) ?
+                line.substring(7, tagIndex).trim() : line.substring(7).trim();
+        Task todo = new Todo(description);
+        if (isDone) {
+            todo.markAsDone();
+        }
+        if (tagIndex != -1) {
+            String tag = line.substring(tagIndex).trim();
+            todo.addTag(tag);
+        }
+        return todo;
+    }
+
+    private static Task getDeadline(String line, int tagIndex, boolean isDone) {
+        int byIndex = line.indexOf("(by: ");
+        //if there is a tag, the description's end index will be the tagIndex. Else if no tag will be byIndex.
+        String description = (tagIndex != -1) ?
+                line.substring(7, tagIndex).trim() : line.substring(7, byIndex).trim();
+        String by = line.substring(byIndex + 5, line.indexOf(')', byIndex)).trim();
+        Task deadline = new Deadline(description, by);
+        if (isDone) {
+            deadline.markAsDone();
+        }
+        if (tagIndex != -1) {
+            String tag = line.substring(tagIndex,byIndex).trim();
+            deadline.addTag(tag);
+        }
+        return deadline;
+    }
+
+    private static Task getEvent(String line, int tagIndex, boolean isDone) {
+        int fromIndex = line.indexOf("(from: ");
+        //if there is a tag, the description's end index will be the tagIndex. Else if no tag will be fromIndex.
+        String description = (tagIndex != -1) ?
+                line.substring(7, tagIndex).trim() : line.substring(7, fromIndex).trim();
+        int toIndex = line.indexOf("to: ");
+        String from = line.substring(fromIndex + 7, line.indexOf("to:", fromIndex)).trim();
+        String to = line.substring(toIndex + 4, line.indexOf(')', fromIndex)).trim();
+        Task event = new Event(description, from, to);
+        if (isDone) {
+            event.markAsDone();
+        }
+        if (tagIndex != -1) {
+            String tag = line.substring(tagIndex,fromIndex).trim();
+            event.addTag(tag);
+        }
+        return event;
     }
 
     /**
@@ -139,7 +167,7 @@ public class Parser {
 
             String fromDate = DateParser.formatDateInput(from);
             String toDate = DateParser.formatDateInput(to);
-            if(!DateParser.isBefore(fromDate, toDate)) {
+            if (!DateParser.isBefore(fromDate, toDate)) {
                 throw new DukeException("The end date-time cannot be earlier than the start date time");
             }
             return new AddEventCommand(description, fromDate, toDate);
@@ -160,7 +188,7 @@ public class Parser {
             } catch (NumberFormatException e) {
                 throw new DukeException("Please enter a valid number.");
             } catch (IndexOutOfBoundsException e) {
-                throw new DukeException("Index does not exist.");
+                throw new DukeException("Index does not exist. Please enter a valid index.");
             }
         case MARK:
             if (taskList.getSize() == 0) {
@@ -174,7 +202,7 @@ public class Parser {
                 int getIndex = (Integer.parseInt(arguments.trim()) - 1);
                 Task task = taskList.getTask(getIndex);
                 if (getIndex < 0 || getIndex >= taskList.getSize()) {
-                    throw new DukeException("Index does not exist.");
+                    throw new DukeException("Index does not exist. Please enter a valid index.");
                 } else if (task.getStatusIcon().equals("X")) {
                     throw new DukeException("Task is currently marked already.");
                 }
@@ -198,7 +226,7 @@ public class Parser {
                 int getIndex = (Integer.parseInt(arguments.trim()) - 1);
                 Task task = taskList.getTask(getIndex);
                 if (getIndex < 0 || getIndex >= taskList.getSize()) {
-                    throw new DukeException("Index does not exist.");
+                    throw new DukeException("Index does not exist. Please enter a valid index.");
                 } else if (task.getStatusIcon().trim().isEmpty()) {
                     throw new DukeException("Task is currently unmarked already.");
                 }
@@ -214,19 +242,73 @@ public class Parser {
                 throw new DukeException("List is empty. Please add a task first.");
             }
             return new ListCommand();
-        case BYE:
-            return new ExitCommand();
         case FIND:
             if (arguments.isBlank()) {
                 throw new DukeException("Keyword to search is empty. Please enter a keyword.");
             }
             return new FindCommand(arguments);
+        case TAG:
+            if (taskList.getSize() == 0) {
+                throw new DukeException("Task list is currently empty. Please add a task first.");
+            }
+            String[] argumentParts = arguments.trim().split("\\s+", 2);
+            if (argumentParts.length < 2 || !argumentParts[1].contains("#")) {
+                throw new DukeException("Please choose an index to tag with the format:" +
+                        " \"tag index #tag\"" + System.lineSeparator() + "Example - tag 1 #fun");
+            }
+
+            try {
+
+            int index = Integer.parseInt(argumentParts[0]) - 1;
+            Task task = taskList.getTask(index);
+            String tag = argumentParts[1].trim();
+
+            if(index < 0 || index >= taskList.getSize()) {
+                throw new DukeException("Index does not exist. Please enter a valid index.");
+            } else if (task.hasTag()) {
+                throw new DukeException("This task is already tagged.");
+            }
+
+            return new TagCommand(index, tag);
+
+            } catch (NumberFormatException e) {
+                throw new DukeException("Please enter a valid number.");
+            } catch (IndexOutOfBoundsException e) {
+                throw new DukeException("Index does not exist. Please enter a valid index.");
+            }
+
+        case UNTAG:
+            if (taskList.getSize() == 0) {
+                throw new DukeException("Task list is currently empty. Please add a task first.");
+            } else if (arguments.isBlank()) {
+                throw new DukeException("No index found. Please input the index of the task"
+                        + " you want to untag.");
+            }
+
+            try {
+                int index = Integer.parseInt(arguments) - 1;
+                Task task = taskList.getTask(index);
+                String tag = task.getTag();
+
+                if(index < 0 || index >= taskList.getSize()) {
+                    throw new DukeException("Index does not exist. Please enter a valid index.");
+                } else if (tag == null) {
+                    throw new DukeException("This task does not have a tag to untag.");
+                }
+
+                return new UntagCommand(index, tag);
+
+            } catch (NumberFormatException e) {
+                throw new DukeException("Please enter a valid number.");
+            } catch (IndexOutOfBoundsException e) {
+                throw new DukeException("Index does not exist. Please enter a valid index.");
+            }
+        case BYE:
+            return new ExitCommand();
         default:
             throw new DukeException("Invalid command. Please try again."
                     + " Remember to leave a space after each command.");
+
         }
-
     }
-
-
 }

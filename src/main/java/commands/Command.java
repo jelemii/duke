@@ -47,8 +47,10 @@ public abstract class Command {
         MARK,
         UNMARK,
         LIST,
-        BYE,
-        FIND
+        FIND,
+        TAG,
+        UNTAG,
+        BYE
     }
 }
 

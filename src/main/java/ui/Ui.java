@@ -40,6 +40,22 @@ public class Ui {
     public void greetUser() {
         System.out.println("\nHello! I'm jelemiiBot\n"
                 + "What can I do for you?\n");
+        showMenu();
+    }
+
+    public void showMenu() {
+        System.out.println("Available commands for the bot:");
+        System.out.println("  todo <description>                                    -> Add a Todo task");
+        System.out.println("  deadline <description> /by <due date>                 -> Add a Deadline task");
+        System.out.println("  event <description> /from <start date> /to <end date> -> Add a Event task");
+        System.out.println("  delete <task index>                                   -> Delete a task");
+        System.out.println("  mark <task index>                                     -> Mark a task as done");
+        System.out.println("  unmark <task index>                                   -> Mark a task as done");
+        System.out.println("  list                                                  -> List all tasks");
+        System.out.println("  find <keyword>                                        -> Find tasks by using a keyword");
+        System.out.println("  tag <task index> <#tag>                               -> Tag a task with a tag");
+        System.out.println("  untag <task index>                                    -> Remove a tag from a task");
+        System.out.println("  bye                                                   -> Exit the bot");
     }
 
     /**
@@ -140,5 +156,25 @@ public class Ui {
                 System.out.println((i + 1) + ". " + tasks.get(i).toString());
             }
         }
+    }
+
+    /**
+     * Tells the user that the specific task has been tagged.
+     * @param index the index of the task.
+     * @param task the description of the task.
+     * @param tag the tag that is to be tagged to the task.
+     */
+    public void showTaskTagged(int index, Task task, String tag) {
+        System.out.println("Nice! I've tagged task " + (index+1) + "(" + task.getDescription() + ") with: " + tag);
+    }
+
+    /**
+     * Tells the user that the tag in the specific task has been removed.
+     * @param index the index of the task.
+     * @param task the description of the task.
+     */
+    public void showTaskUntagged(int index, Task task, String tag) {
+        System.out.println("Ok, I have remove the tag " + tag + " in task: " +
+                (index+1) + "(" + task.getDescription() + ")" );
     }
 }
