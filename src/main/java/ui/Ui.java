@@ -1,6 +1,5 @@
 package ui;
 
-import storage.Storage;
 import tasks.*;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class Ui {
      */
     public static void showTaskDeleted(Task task, int taskCount) {
         System.out.println("Noted. I've removed this task:");
-        System.out.println(task);
+        System.out.println(taskCount + ". " + task);
         System.out.println("Now you have " + (taskCount - 1) + " tasks in the list.");
     }
 
@@ -38,7 +37,7 @@ public class Ui {
      * Greets the user.
      */
     public void greetUser() {
-        System.out.println("\nHello! I'm jelemiiBot");
+        System.out.println("Hello! I'm jelemiiBot");
         System.out.println("What can I do for you?\n");
     }
 
@@ -46,7 +45,7 @@ public class Ui {
      * Show the user the available commands that can be used for the bot.
      */
     public void showMenu() {
-        System.out.println("Available commands for the bot:");
+        System.out.println("Menu - Available commands for the bot:");
         System.out.println("  todo <description>                                    -> Add a Todo task");
         System.out.println("  deadline <description> /by <due date>                 -> Add a Deadline task");
         System.out.println("  event <description> /from <start date> /to <end date> -> Add a Event task");
@@ -74,7 +73,6 @@ public class Ui {
      */
     public void fileNotFoundError() {
         System.out.println("""
-
                 Existing file not found. A new file will be created.
                 Creating new file...
                 """);
@@ -128,18 +126,20 @@ public class Ui {
         ArrayList<Event> upcomingEvents = taskList.upcomingEvents();
 
         if(!(upcomingDeadlinesDue.isEmpty() && upcomingEvents.isEmpty())) {
-            System.out.println("Reminder: You have upcoming Tasks.");
+            System.out.println("Reminder: You have upcoming Tasks.\n");
             if(!upcomingDeadlinesDue.isEmpty()) {
-                System.out.println("\nUpcoming Deadlines: ");
+                System.out.println("Upcoming Deadlines: ");
                 for(Deadline deadline : upcomingDeadlinesDue) {
                     System.out.println(deadline);
                 }
+                System.out.print(System.lineSeparator()); //single line separator
             }
             if(!upcomingEvents.isEmpty()) {
-                System.out.println("\nUpcoming Events: ");
+                System.out.println("Upcoming Events: ");
                 for(Event event : upcomingEvents) {
                     System.out.println(event);
                 }
+                System.out.println(System.lineSeparator()); //double line separator
             }
         }
     }
@@ -168,6 +168,7 @@ public class Ui {
      */
     public void showTaskTagged(int index, Task task, String tag) {
         System.out.println("Nice! I've tagged task " + (index+1) + "(" + task.getDescription() + ") with: " + tag);
+        System.out.println(task);
     }
 
     /**
@@ -178,5 +179,6 @@ public class Ui {
     public void showTaskUntagged(int index, Task task, String tag) {
         System.out.println("Ok, I have remove the tag " + tag + " in task: " +
                 (index+1) + "(" + task.getDescription() + ")" );
+        System.out.println(task);
     }
 }

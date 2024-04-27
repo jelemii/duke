@@ -113,28 +113,30 @@ public class Parser {
         switch (commandType) {
         case TODO:
             if (arguments.isBlank()) {
-                throw new DukeException("Input task is empty. Input the task you want to add "
-                        + "after the \"todo\" command. e.g. \"todo task\"");
+                throw new DukeException("""
+                        Input task is empty. Please follow the input format in the menu.
+                        e.g. "todo read book\"""");
             } else if (taskList.isDuplicate(arguments)) {
                 throw new DukeException("This task already exists in the list.");
             }
             return new AddTodoCommand(arguments);
         case DEADLINE:
             if (arguments.isBlank()) {
-                throw new DukeException("Input task is empty. Input the task you want to add "
-                        + "after the \"deadline\" command.\n"
-                        + "e.g. \"deadline task /by date\"");
+                throw new DukeException("""
+                        Input task is empty. Please follow the input format in the menu.
+                        e.g. "deadline read book /by 01-01-2020 00:00"\"""");
             } else if (!arguments.contains("/by")) {
-                throw new DukeException("Invalid format. Please add a \"/by\" for deadline tasks.");
+                throw new DukeException("""
+                        Invalid format. Please follow the input format in the menu.
+                        e.g. "deadline read book /by 01-01-2020 00:00\"""");
             }
 
             String[] deadlineParts = arguments.split("/by", 2);
 
             if (deadlineParts.length < 2 || deadlineParts[0].isBlank() || deadlineParts[1].isBlank()) {
                 throw new DukeException("""
-                        Task or date is empty. Input a task and a date for the
-                        deadline you want after the "/by" command.
-                        e.g. "deadline task /by date\"""");
+                        Input task or date is empty. Please follow the input format in the menu.
+                        e.g. "deadline read book /by 01-01-2020 00:00\"""");
             } else if (taskList.isDuplicate(deadlineParts[0])) {
                 throw new DukeException("This task already exists in the list.");
             }
@@ -144,12 +146,13 @@ public class Parser {
             return new AddDeadlineCommand(deadlineParts[0].trim(), byDate);
         case EVENT:
             if (arguments.isBlank()) {
-                throw new DukeException("Input task is empty. Input the task you want to add "
-                        + "after the \"event\" command\n"
-                        + "e.g. \"event task /from start-date /to end-date\"");
+                throw new DukeException("""
+                        Input task is empty. Please follow the input format in the menu.
+                        e.g. "event book sale /from 01-01-2020 00:00 /to 01-01-2020 00:00\"""");
             } else if (!(arguments.contains("/from") && arguments.contains("/to"))) {
-                throw new DukeException("Invalid format. Please add a \"/from\" and \"/to\" "
-                        + "for event tasks.");
+                throw new DukeException("""
+                        Invalid format. Please follow the input format in the menu.
+                        e.g. "event book sale /from 01-01-2020 00:00 /to 01-01-2020 00:00\"""");
             }
 
             int fromIndex = arguments.indexOf("/from");
@@ -161,9 +164,8 @@ public class Parser {
 
             if (description.isEmpty() || from.isEmpty() || to.isEmpty()) {
                 throw new DukeException("""
-                        Task, start-date-time or end-date-time is empty. Input a task and 2 dates for
-                        the start-date and end-date you want for the task after the "/event" command.
-                         e.g. "event task /from start-date-time /to end-date-time\"""");
+                        Invalid format. Please follow the input format in the menu.
+                        e.g. "event book sale /from 01-01-2020 00:00 /to 01-01-2020 00:00\"""");
             } else if (taskList.isDuplicate(description)) {
                 throw new DukeException("This task already exists in the list.");
             }
@@ -246,7 +248,9 @@ public class Parser {
             }
             return new ListCommand();
         case FIND:
-            if (arguments.isBlank()) {
+            if (taskList.getSize() == 0) {
+                throw new DukeException("Task list is currently empty. Please add a task first.");
+            } else if (arguments.isBlank()) {
                 throw new DukeException("Keyword to search is empty. Please enter a keyword.");
             }
             return new FindCommand(arguments);
@@ -256,8 +260,9 @@ public class Parser {
             }
             String[] argumentParts = arguments.trim().split("\\s+", 2);
             if (argumentParts.length < 2 || !argumentParts[1].contains("#")) {
-                throw new DukeException("Please choose an index to tag with the format:" +
-                        " \"tag index #tag\"" + System.lineSeparator() + "Example - tag 1 #fun");
+                throw new DukeException("""
+                        Invalid format. Please follow the input format in the menu.
+                        e.g. "tag 1 #fun\"""");
             }
 
             try {

@@ -1,8 +1,6 @@
-[T][X] watch netflix #fun
+[T][ ] watch netflix
 [T][ ] buy book
-[D][ ] read book #fun (by: Dec 10 2024 11:59pm)
-[D][ ] return book #fun (by: Dec 11 2024 11:00am)
-[D][ ] book air tickets (by: May 1 2024 12:00am)
-[D][ ] buy book (by: Apr 27 2024 01:00pm)
-[E][ ] birthday party #fun (from: Apr 3 2024 11:00pm to: Apr 3 2024 11:59pm)
-[E][ ] travel to japan (from: Nov 3 2024 12:00pm to: Nov 10 2024 10:00pm)
+[D][ ] read book (by: Apr 30 2024 11:59pm)
+[D][ ] buy book on sale (by: May 3 2024 12:00pm)
+[E][ ] john birthday party (from: May 1 2024 01:00pm to: May 1 2024 11:59pm)
+[E][ ] army reservist (from: May 6 2024 08:00am to: May 10 2024 10:00pm)
