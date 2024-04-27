@@ -18,6 +18,7 @@ public class DeleteCommand extends Command {
 
     @Override
     public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
+        assert tasks != null : "Task list should not be empty. DukeException should have been thrown in Parser.";
         Ui.showTaskDeleted(tasks.getTask(index), tasks.getSize());
         tasks.deleteTask(index);
         storage.saveTaskToFile(tasks.getAllTasks());

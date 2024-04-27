@@ -21,7 +21,7 @@ public class UntagCommand extends Command {
     @Override
     public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
         Task task = tasks.getTask(index);
-        task.unTag(tag);
+        task.unTag();
         ui.showTaskUntagged(index,task,tag);
         storage.saveTaskToFile(tasks.getAllTasks());
     }

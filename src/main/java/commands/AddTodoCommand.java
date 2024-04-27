@@ -21,6 +21,7 @@ public class AddTodoCommand extends Command {
 
     @Override
     public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
+        assert description != null : "Description should not be null.";
         Task task = new Todo(description);
         tasks.addTask(task);
         Ui.showTaskAdded(task, tasks.getSize());

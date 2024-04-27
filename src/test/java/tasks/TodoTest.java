@@ -1,7 +1,9 @@
 package tasks;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class TodoTest {
     @Test
@@ -15,5 +17,16 @@ public class TodoTest {
 
         task.unmarkAsDone();
         assertEquals("[T][ ] Clean room",task.toString());
+
+        String tag = "#important";
+        task.addTag(tag);
+        assertEquals("[T][ ] Clean room #important",task.toString());
+        assertTrue(task.hasTag());
+        assertEquals("#important",task.getTag());
+
+        task.unTag();
+        assertEquals("[T][ ] Clean room",task.toString());
+        assertFalse(task.hasTag());
+        assertNull(task.getTag());
     }
 }

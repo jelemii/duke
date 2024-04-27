@@ -38,11 +38,13 @@ public class Ui {
      * Greets the user.
      */
     public void greetUser() {
-        System.out.println("\nHello! I'm jelemiiBot\n"
-                + "What can I do for you?\n");
-        showMenu();
+        System.out.println("\nHello! I'm jelemiiBot");
+        System.out.println("What can I do for you?\n");
     }
 
+    /**
+     * Show the user the available commands that can be used for the bot.
+     */
     public void showMenu() {
         System.out.println("Available commands for the bot:");
         System.out.println("  todo <description>                                    -> Add a Todo task");
@@ -55,7 +57,7 @@ public class Ui {
         System.out.println("  find <keyword>                                        -> Find tasks by using a keyword");
         System.out.println("  tag <task index> <#tag>                               -> Tag a task with a tag");
         System.out.println("  untag <task index>                                    -> Remove a tag from a task");
-        System.out.println("  bye                                                   -> Exit the bot");
+        System.out.println("  bye                                                   -> Exit the bot\n");
     }
 
     /**

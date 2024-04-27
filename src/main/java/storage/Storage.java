@@ -30,6 +30,7 @@ public class Storage {
     public ArrayList<Task> loadFileContents() throws DukeException {
         ArrayList<Task> taskList = new ArrayList<>();
         File file = new File(filePath);
+        assert file.exists() : "There must be an existing task file";
         try {
             if (!file.exists()) {
                 throw new DukeException("File not found.");
@@ -57,6 +58,7 @@ public class Storage {
      * @throws IOException When a task cannot be saved into the file or there is a problem with the file.
      */
     public void saveTaskToFile(ArrayList<Task> tasks) throws IOException {
+        assert tasks != null : "A list of tasks to save should exist.";
         FileWriter fw = new FileWriter(filePath);
         for (Task task : tasks) {
             fw.write(task.toString() + "\n");

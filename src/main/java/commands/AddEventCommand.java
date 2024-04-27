@@ -25,6 +25,9 @@ public class AddEventCommand extends Command {
 
     @Override
     public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
+        assert description != null : "Description should not be null.";
+        assert from != null : "From should not be null.";
+        assert to != null : "To should not be null.";
         Task task = new Event(description, from, to);
         tasks.addTask(task);
         Ui.showTaskAdded(task, tasks.getSize());

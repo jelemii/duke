@@ -1,7 +1,8 @@
-[T][X] zasd #fun
-[T][ ] asd
-[D][ ] c #fun (by: Dec 10 2024 11:59pm)
-[D][ ] dsa #fun (by: Dec 2 2024 12:00am)
-[D][ ] sdfa (by: Dec 1 2024 12:00am)
-[D][ ] asdfa (by: Apr 27 2024 01:00pm)
-[E][ ] games #fun (from: Apr 1 2024 11:59pm to: Apr 2 2024 11:59pm)
+[T][X] watch netflix #fun
+[T][ ] buy book
+[D][ ] read book #fun (by: Dec 10 2024 11:59pm)
+[D][ ] return book #fun (by: Dec 11 2024 11:00am)
+[D][ ] book air tickets (by: May 1 2024 12:00am)
+[D][ ] buy book (by: Apr 27 2024 01:00pm)
+[E][ ] birthday party #fun (from: Apr 3 2024 11:00pm to: Apr 3 2024 11:59pm)
+[E][ ] travel to japan (from: Nov 3 2024 12:00pm to: Nov 10 2024 10:00pm)

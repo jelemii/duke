@@ -21,6 +21,7 @@ public class TagCommand extends Command {
 
     @Override
     public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
+        assert tasks != null : "Task list should not be empty. DukeException should have been thrown in Parser.";
         Task task = tasks.getTask(index);
         task.addTag(tag);
         ui.showTaskTagged(index,task,tag);

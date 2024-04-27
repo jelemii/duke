@@ -23,6 +23,8 @@ public class AddDeadlineCommand extends Command {
 
     @Override
     public void executeCommand(TaskList tasks, Ui ui, Storage storage) throws IOException {
+        assert description != null : "description should not be null";
+        assert by != null : "by should not be null";
         Task task = new Deadline(description, by);
         tasks.addTask(task);
         Ui.showTaskAdded(task, tasks.getSize());

@@ -1,7 +1,9 @@
 package tasks;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class EventTest {
     @Test
@@ -20,5 +22,18 @@ public class EventTest {
         task.unmarkAsDone();
         assertEquals("[E][ ] Clean room (from: May 01 2024 12:00pm " +
                 "to: May 01 2024 23:59pm)",task.toString());
+
+        String tag = "#important";
+        task.addTag(tag);
+        assertEquals("[E][ ] Clean room #important (from: May 01 2024 12:00pm " +
+                "to: May 01 2024 23:59pm)",task.toString());
+        assertTrue(task.hasTag());
+        assertEquals("#important",task.getTag());
+
+        task.unTag();
+        assertEquals("[E][ ] Clean room (from: May 01 2024 12:00pm " +
+                "to: May 01 2024 23:59pm)",task.toString());
+        assertFalse(task.hasTag());
+        assertNull(task.getTag());
     }
 }

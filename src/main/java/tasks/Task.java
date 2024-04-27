@@ -24,18 +24,21 @@ public class Task {
     }
 
     public void markAsDone() {
+        assert !isDone : "Task should not already been marked as done.";
         this.isDone = true;
     }
 
     public void unmarkAsDone() {
+        assert isDone : "Task should have been marked as done to unmark.";
         this.isDone = false;
     }
 
     public void addTag(String tag) {
+        assert tag != null : "Tag to be added should not be empty.";
         this.tag = tag;
     }
 
-    public void unTag(String tag) {
+    public void unTag() {
         this.tag = null;
     }
 
