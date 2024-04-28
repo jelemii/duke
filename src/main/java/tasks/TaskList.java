@@ -70,21 +70,6 @@ public class TaskList {
     }
 
     /**
-     * Checks for duplicates in the current task list.
-     *
-     * @param arguments Contains the description of the task to be compared to the tasks in the task list.
-     * @return True if the task already exists in the list. If not, return false
-     */
-    public boolean isDuplicate(String arguments) {
-        for (Task task : tasks) {
-            if (task.description.equals(arguments)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Creates a list of upcoming deadline tasks that are due soon.
      * @return The list of upcoming deadline tasks.
      */

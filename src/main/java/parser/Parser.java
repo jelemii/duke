@@ -93,6 +93,21 @@ public class Parser {
     }
 
     /**
+     * Checks for duplicates in the current task list.
+     *
+     * @param arguments Contains the description of the task to be compared to the tasks in the task list.
+     * @return True if the task already exists in the list. If not, return false
+     */
+    public boolean isDuplicate(String arguments) {
+        for (Task task : taskList.getAllTasks()) {
+            if (task.getDescription().equals(arguments)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Parse the input from the user to interpret the command to be executed.
      *
      * @param input The input by the user
@@ -116,7 +131,7 @@ public class Parser {
                 throw new DukeException("""
                         Input task is empty. Please follow the input format in the menu.
                         e.g. "todo read book\"""");
-            } else if (taskList.isDuplicate(arguments)) {
+            } else if (isDuplicate(arguments)) {
                 throw new DukeException("This task already exists in the list.");
             }
             return new AddTodoCommand(arguments);
@@ -137,7 +152,7 @@ public class Parser {
                 throw new DukeException("""
                         Input task or date is empty. Please follow the input format in the menu.
                         e.g. "deadline read book /by 01-01-2020 00:00\"""");
-            } else if (taskList.isDuplicate(deadlineParts[0])) {
+            } else if (isDuplicate(deadlineParts[0].trim())) {
                 throw new DukeException("This task already exists in the list.");
             }
 
@@ -166,7 +181,7 @@ public class Parser {
                 throw new DukeException("""
                         Invalid format. Please follow the input format in the menu.
                         e.g. "event book sale /from 01-01-2020 00:00 /to 01-01-2020 00:00\"""");
-            } else if (taskList.isDuplicate(description)) {
+            } else if (isDuplicate(description.trim())) {
                 throw new DukeException("This task already exists in the list.");
             }
 
@@ -216,7 +231,7 @@ public class Parser {
             } catch (NumberFormatException e) {
                 throw new DukeException("Please enter a valid number.");
             } catch (IndexOutOfBoundsException e) {
-                throw new DukeException("Index does not exist.");
+                throw new DukeException("Index does not exist. Please enter a valid index.");
             }
 
         case UNMARK:
@@ -240,7 +255,7 @@ public class Parser {
             } catch (NumberFormatException e) {
                 throw new DukeException("Please enter a valid number.");
             } catch (IndexOutOfBoundsException e) {
-                throw new DukeException("Index does not exist.");
+                throw new DukeException("Index does not exist. Please enter a valid index.");
             }
         case LIST:
             if (taskList.getSize() == 0) {
