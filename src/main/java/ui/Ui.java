@@ -2,6 +2,9 @@ package ui;
 
 import tasks.*;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -72,10 +75,18 @@ public class Ui {
      * Tells the user that there is no existing file.
      */
     public void fileNotFoundError() {
-        System.out.println("""
-                Existing file not found. A new file will be created.
-                Creating new file...
-                """);
+        System.out.println("Existing file not found. A new file will be created.");
+    }
+
+    /**
+     * Tells the user that a file is created and shows the absolute path.
+     */
+    //Path method adapted from https://www.baeldung.com/java-from-relative-to-absolute-paths
+    public void showNewFileCreated(String filePath) {
+        System.out.println("Creating new file...");
+        System.out.println("File has been created. The absolute filepath is: ");
+        Path absolutePath = Paths.get(filePath).toAbsolutePath();
+        System.out.println(absolutePath + System.lineSeparator());
     }
 
     /**

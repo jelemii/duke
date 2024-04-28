@@ -23,7 +23,7 @@ public class Duke {
      *
      * @param filePath the path to the file which stores all the saved tasks
      */
-    public Duke(String filePath) {
+    public Duke(String filePath) throws DukeException {
         ui = new Ui();
         storage = new Storage(filePath);
         tasks = new TaskList();
@@ -33,11 +33,13 @@ public class Duke {
             ui.showUpcomingTasks(tasks); //Reminder to user of upcoming tasks
         } catch (DukeException e) {
             ui.fileNotFoundError();
+            storage.createFile(filePath);
+            ui.showNewFileCreated(filePath);
         }
     }
 
-    public static void main(String[] args) {
-        new Duke("data/duke.txt").run();
+    public static void main(String[] args) throws DukeException {
+        new Duke("duke.txt").run();
     }
 
     /**
