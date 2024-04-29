@@ -32,7 +32,7 @@ public class Ui {
      */
     public static void showTaskDeleted(Task task, int taskCount) {
         System.out.println("Noted. I've removed this task:");
-        System.out.println(taskCount + ". " + task);
+        System.out.println(task);
         System.out.println("Now you have " + (taskCount - 1) + " tasks in the list.");
     }
 
