@@ -1,6 +1,0 @@
-[T][ ] watch netflix
-[T][ ] buy book
-[D][ ] read book (by: Apr 30 2024 11:59pm)
-[D][ ] buy book on sale (by: May 3 2024 12:00pm)
-[E][ ] john birthday party (from: May 1 2024 01:00pm to: May 1 2024 11:59pm)
-[E][ ] army reservist (from: May 6 2024 08:00am to: May 10 2024 10:00pm)

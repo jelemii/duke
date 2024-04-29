@@ -121,7 +121,7 @@ public class Parser {
             throw new DukeException("Input cannot be empty. Please enter a command.");
         }
         String[] parts = input.trim().split("\\s+", 2);
-        Command.CommandType commandType = Command.commands(parts[0]);
+        CommandType commandType = Command.commands(parts[0]);
         //use ternary operator to check if there is a 2nd part, if there is, assign argument to parts[1]
         String arguments = parts.length > 1 ? parts[1] : "";
 

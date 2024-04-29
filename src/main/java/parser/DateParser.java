@@ -147,7 +147,7 @@ public class DateParser {
 
         LocalDateTime formatDate = LocalDateTime.parse(date, format) ;
         long daysBetween = ChronoUnit.DAYS.between(LocalDateTime.now(), formatDate);
-        if (daysBetween > 0 && daysBetween <= 3) {
+        if (daysBetween >= 0 && daysBetween <= 3) {
             return true;
         }
         return false;

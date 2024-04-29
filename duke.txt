@@ -1,0 +1,4 @@
+[T][ ] buy book
+[D][ ] buy flight tickets (by: May 1 2024 11:59pm)
+[D][ ] return book #important (by: May 5 2024 10:00pm)
+[E][ ] job fair (from: May 1 2024 10:00am to: May 2 2024 10:00pm)
