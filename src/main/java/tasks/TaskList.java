@@ -107,6 +107,8 @@ public class TaskList {
         for(Task task : tasks) {
             if(task.description.toLowerCase().contains(keyword.toLowerCase())) {
                 matchingTasksFound.add(task);
+            } else if (task.hasTag() && task.getTag().contains(keyword.toLowerCase())) {
+                matchingTasksFound.add(task);
             }
         }
         return matchingTasksFound;
